@@ -53,66 +53,115 @@ export default function BloodBankDashboard() {
   }, []);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Blood Bank Dashboard</h1>
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">🩸 Blood Bank Dashboard</h1>
+        <p className="text-gray-600">Manage your blood inventory and stock levels</p>
+      </div>
 
-      {/* Add Inventory */}
-      <div className="bg-white p-4 rounded-xl shadow-md mb-6 max-w-md">
-        <h2 className="text-lg font-semibold mb-3">Add Inventory</h2>
+      {/* Inventory Summary */}
+      <div className="card-elevated">
+        <div className="card-body">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600 font-medium mb-1">Total Inventory Items</p>
+              <p className="text-4xl font-bold text-red-600">{inventory.length}</p>
+            </div>
+            <div className="text-5xl opacity-20">📦</div>
+          </div>
+        </div>
+      </div>
 
-        <select
-          value={bloodGroup}
-          onChange={(e) => setBloodGroup(e.target.value)}
-          className="w-full border p-2 rounded mb-3"
-        >
-          <option>A+</option>
-          <option>A-</option>
-          <option>B+</option>
-          <option>B-</option>
-          <option>O+</option>
-          <option>O-</option>
-          <option>AB+</option>
-          <option>AB-</option>
-        </select>
+      {/* Add Inventory Form */}
+      <div className="card-elevated">
+        <div className="card-header">
+          <h2 className="text-2xl font-bold text-gray-900">Add Inventory</h2>
+        </div>
+        <div className="card-body space-y-4">
+          <div className="form-group">
+            <label className="form-label">Blood Group</label>
+            <select
+              value={bloodGroup}
+              onChange={(e) => setBloodGroup(e.target.value)}
+              className="form-select"
+            >
+              <option>A+</option>
+              <option>A-</option>
+              <option>B+</option>
+              <option>B-</option>
+              <option>O+</option>
+              <option>O-</option>
+              <option>AB+</option>
+              <option>AB-</option>
+            </select>
+          </div>
 
-        <input
-          type="number"
-          value={units}
-          onChange={(e) => setUnits(Number(e.target.value))}
-          className="w-full border p-2 rounded mb-3"
-        />
+          <div className="form-group">
+            <label className="form-label">Units to Add</label>
+            <input
+              type="number"
+              value={units}
+              onChange={(e) => setUnits(Number(e.target.value))}
+              className="form-input"
+              min="1"
+              placeholder="Enter number of units"
+            />
+          </div>
 
-        <button
-          onClick={handleAdd}
-          className="w-full bg-red-600 text-white py-2 rounded"
-        >
-          Add Units
-        </button>
+          <button
+            onClick={handleAdd}
+            className="btn btn-primary w-full"
+          >
+            + Add Units
+          </button>
+        </div>
       </div>
 
       {/* Inventory List */}
-      <div className="space-y-4">
+      <div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Current Inventory</h2>
         {inventory.length === 0 ? (
-          <p>No inventory available.</p>
-        ) : (
-          inventory.map((item) => (
-            <div
-              key={item.id}
-              className="bg-white p-4 rounded-xl shadow-md flex justify-between items-center"
-            >
-              <div>
-                <p className="font-bold">{item.blood_group}</p>
-                <p>Units: {item.units_available}</p>
-              </div>
-
-              <button
-                onClick={() => handleDelete(item.id)}
-                className="bg-red-500 text-white px-3 py-1 rounded"
-              >
-                Delete
-              </button>
+          <div className="card">
+            <div className="card-body text-center py-12">
+              <p className="text-gray-500 text-lg">No inventory items. Add some blood units to get started!</p>
             </div>
-          ))
+          </div>
+        ) : (
+          <div className="grid gap-4">
+            {inventory.map((item) => (
+              <div
+                key={item.id}
+                className="card hover:shadow-lg transition-shadow"
+              >
+                <div className="card-body flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <div className={`bg-red-100 rounded-lg p-3 ${
+                      item.units_available < 5 ? 'ring-2 ring-red-500' : ''
+                    }`}>
+                      <span className="text-2xl">🩸</span>
+                    </div>
+                    <div>
+                      <p className="font-bold text-lg text-gray-900">{item.blood_group}</p>
+                      <div className="flex items-center space-x-2 mt-1">
+                        <p className="text-gray-600 font-medium">{item.units_available} units</p>
+                        {item.units_available < 5 && (
+                          <span className="badge badge-danger text-xs">Low Stock</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => handleDelete(item.id)}
+                    className="btn btn-danger btn-sm"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>

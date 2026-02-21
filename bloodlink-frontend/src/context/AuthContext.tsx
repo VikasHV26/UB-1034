@@ -1,12 +1,13 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
 
-type Role = "patient" | "hospital" | "bloodbank" | null;
+type RoleType = "patient" | "hospital" | "bloodbank" | "admin";
+type Role = RoleType | null;
 
 interface AuthContextType {
   role: Role;
   token: string | null;
-  login: (token: string, role: Role) => void;
+  login: (token: string, role: RoleType) => void;
   logout: () => void;
 }
 
@@ -19,20 +20,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // 🔥 Restore token from localStorage on app load
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
-    const storedRole = localStorage.getItem("role") as Role;
+    const storedRole = localStorage.getItem("role");
 
     if (storedToken && storedRole) {
-      setToken(storedToken);
-      setRole(storedRole);
+      const validRoles: RoleType[] = ["patient", "hospital", "bloodbank", "admin"];
+      if (validRoles.includes(storedRole as RoleType)) {
+        setToken(storedToken);
+        setRole(storedRole as RoleType);
+      }
     }
   }, []);
 
-  const login = (token: string, role: Role) => {
+  const login = (token: string, role: RoleType) => {
     setToken(token);
     setRole(role);
 
     localStorage.setItem("token", token);
-    localStorage.setItem("role", role || "");
+    localStorage.setItem("role", role);
   };
 
   const logout = () => {

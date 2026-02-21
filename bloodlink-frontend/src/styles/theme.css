@@ -1,0 +1,206 @@
+/* Professional Blood Management Theme */
+
+/* Hero Background Gradients */
+.hero-gradient-primary {
+  background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #991b1b 100%);
+}
+
+.hero-gradient-dark {
+  background: linear-gradient(180deg, #991b1b 0%, #7f1d1d 100%);
+}
+
+.hero-gradient-featured {
+  background: linear-gradient(180deg, #b91c1c 0%, #7f1d1d 100%);
+}
+
+/* Glass Morphism Effect */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Professional Shadows */
+.shadow-professional {
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-professional-lg {
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.15), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-professional-xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 15px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Brand Colors */
+.text-blood-red {
+  color: #dc2626;
+}
+
+.bg-blood-red {
+  background-color: #dc2626;
+}
+
+.border-blood-red {
+  border-color: #dc2626;
+}
+
+/* Gradient Text */
+.text-gradient-red {
+  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Professional Card Hover Effects */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -10px rgba(220, 38, 38, 0.15);
+}
+
+/* Button Animations */
+.btn-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.btn-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(220, 38, 38, 0.8);
+  }
+}
+
+/* Loading Spinner */
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(220, 38, 38, 0.2);
+  border-radius: 50%;
+  border-top-color: #dc2626;
+  animation: spinner 1s linear infinite;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Gradient Border */
+.gradient-border {
+  background-image: linear-gradient(#fff, #fff),
+    linear-gradient(135deg, #dc2626, #ef4444);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  border: 2px solid transparent;
+}
+
+/* Smooth Transitions */
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-smooth-fast {
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Underline Animation */
+.underline-animation {
+  position: relative;
+  text-decoration: none;
+}
+
+.underline-animation::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #dc2626;
+  transition: width 0.3s ease;
+}
+
+.underline-animation:hover::after {
+  width: 100%;
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  .text-responsive-lg {
+    font-size: 1.875rem;
+  }
+
+  .text-responsive-xl {
+    font-size: 2.25rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .text-responsive-lg {
+    font-size: 2.25rem;
+  }
+
+  .text-responsive-xl {
+    font-size: 3rem;
+  }
+}
+
+/* Focus Visible States */
+.focus-visible {
+  outline: 2px solid #dc2626;
+  outline-offset: 2px;
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none;
+  }
+
+  body {
+    background-color: white;
+    color: black;
+  }
+}

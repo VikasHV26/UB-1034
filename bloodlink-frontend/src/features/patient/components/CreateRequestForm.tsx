@@ -30,47 +30,79 @@ export default function CreateRequestForm() {
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-md max-w-md">
-      <h2 className="text-xl font-semibold mb-4">Create Blood Request</h2>
+    <div className="card-elevated max-w-2xl">
+      <div className="card-header">
+        <h2 className="text-2xl font-bold text-gray-900">🩸 Create Blood Request</h2>
+        <p className="text-gray-600 text-sm mt-1">Request blood units quickly and easily</p>
+      </div>
 
-      <select
-        value={bloodGroup}
-        onChange={(e) => setBloodGroup(e.target.value)}
-        className="w-full border p-2 rounded mb-3"
-      >
-        <option>A+</option>
-        <option>A-</option>
-        <option>B+</option>
-        <option>B-</option>
-        <option>O+</option>
-        <option>O-</option>
-        <option>AB+</option>
-        <option>AB-</option>
-      </select>
+      <div className="card-body space-y-5">
+        {/* Blood Group */}
+        <div className="form-group">
+          <label className="form-label">Blood Group *</label>
+          <select
+            value={bloodGroup}
+            onChange={(e) => setBloodGroup(e.target.value)}
+            className="form-select"
+          >
+            <option>A+</option>
+            <option>A-</option>
+            <option>B+</option>
+            <option>B-</option>
+            <option>O+</option>
+            <option>O-</option>
+            <option>AB+</option>
+            <option>AB-</option>
+          </select>
+        </div>
 
-      <input
-        type="number"
-        value={units}
-        onChange={(e) => setUnits(Number(e.target.value))}
-        className="w-full border p-2 rounded mb-3"
-      />
+        {/* Units Required */}
+        <div className="form-group">
+          <label className="form-label">Units Required *</label>
+          <input
+            type="number"
+            value={units}
+            onChange={(e) => setUnits(Number(e.target.value))}
+            className="form-input"
+            min="1"
+            max="20"
+            placeholder="Enter number of units"
+          />
+        </div>
 
-      <select
-        value={requestType}
-        onChange={(e) => setRequestType(e.target.value)}
-        className="w-full border p-2 rounded mb-4"
-      >
-        <option value="immediate">Immediate</option>
-        <option value="scheduled">Scheduled</option>
-      </select>
+        {/* Request Type */}
+        <div className="form-group">
+          <label className="form-label">Request Type *</label>
+          <select
+            value={requestType}
+            onChange={(e) => setRequestType(e.target.value)}
+            className="form-select"
+          >
+            <option value="immediate">⚡ Immediate (Urgent)</option>
+            <option value="scheduled">📅 Scheduled (Planned)</option>
+          </select>
+        </div>
 
-      <button
-        onClick={handleSubmit}
-        disabled={loading}
-        className="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700 disabled:opacity-50"
-      >
-        {loading ? "Submitting..." : "Submit Request"}
-      </button>
+        {/* Submit Button */}
+        <button
+          onClick={handleSubmit}
+          disabled={loading}
+          className="btn btn-primary w-full btn-lg disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {loading ? (
+            <>
+              <span className="inline-block animate-spin mr-2">⏳</span>
+              Submitting...
+            </>
+          ) : (
+            "📤 Submit Request"
+          )}
+        </button>
+
+        <p className="text-xs text-gray-500 text-center mt-4">
+          Fields marked with * are required
+        </p>
+      </div>
     </div>
   );
 }

@@ -23,44 +23,81 @@ export default function PatientDashboard() {
   }, []);
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-6">Patient Dashboard</h1>
-
-      {/* Stats Card */}
-      <div className="bg-white p-6 rounded-xl shadow-md mb-8">
-        <p className="text-lg font-semibold">Total Requests</p>
-        <p className="text-3xl text-red-600 font-bold">
-          {requests.length}
-        </p>
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">👤 Patient Dashboard</h1>
+        <p className="text-gray-600">Manage your blood requests and track their status</p>
       </div>
 
-      <CreateRequestForm />
+      {/* Stats Card */}
+      <div className="card-elevated">
+        <div className="card-body">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600 font-medium mb-1">Total Requests</p>
+              <p className="text-4xl font-bold text-red-600">{requests.length}</p>
+            </div>
+            <div className="text-5xl opacity-20">📋</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Create Request Form */}
+      <div>
+        <CreateRequestForm />
+      </div>
 
       {/* Requests List */}
-      <div className="mt-10 space-y-4">
-        {requests.map((req) => (
-          <div
-            key={req.id}
-            className="bg-white p-4 rounded-xl shadow-md flex justify-between"
-          >
-            <div>
-              <p className="font-bold">{req.blood_group}</p>
-              <p>Units: {req.units_required}</p>
+      <div className="space-y-4">
+        <h2 className="text-2xl font-bold text-gray-900">Your Requests</h2>
+        {requests.length === 0 ? (
+          <div className="card">
+            <div className="card-body text-center py-12">
+              <p className="text-gray-500 text-lg">No blood requests yet. Create one to get started!</p>
             </div>
-
-            <span
-              className={`px-3 py-1 rounded-full text-sm ${
-                req.status === "approved"
-                  ? "bg-green-100 text-green-700"
-                  : req.status === "rejected"
-                  ? "bg-red-100 text-red-700"
-                  : "bg-yellow-100 text-yellow-700"
-              }`}
-            >
-              {req.status}
-            </span>
           </div>
-        ))}
+        ) : (
+          <div className="space-y-4">
+            {requests.map((req) => (
+              <div
+                key={req.id}
+                className="card hover:shadow-lg transition-shadow"
+              >
+                <div className="card-body flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-4">
+                      <div className="bg-red-100 rounded-lg p-3">
+                        <span className="text-2xl">🩸</span>
+                      </div>
+                      <div>
+                        <p className="font-bold text-gray-900 text-lg">{req.blood_group}</p>
+                        <p className="text-gray-600">{req.units_required} units requested</p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          {new Date(req.created_at).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-4">
+                    <span
+                      className={`badge ${
+                        req.status === "approved"
+                          ? "badge-success"
+                          : req.status === "rejected"
+                          ? "badge-danger"
+                          : "badge-warning"
+                      }`}
+                    >
+                      {req.status.charAt(0).toUpperCase() + req.status.slice(1)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

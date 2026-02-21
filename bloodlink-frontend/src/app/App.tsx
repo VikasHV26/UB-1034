@@ -11,11 +11,18 @@ import AdminDashboard from "../features/admin/AdminDashboard";
 function DashboardRouter() {
   const { role } = useAuth();
 
-  if (role === "patient") return <PatientDashboard />;
-  if (role === "hospital") return <HospitalDashboard />;
-  if (role === "bloodbank") return <BloodBankDashboard />;
-  if (role === "admin") return <AdminDashboard />;
-  return null;
+  switch(role) {
+    case "patient":
+      return <PatientDashboard />;
+    case "hospital":
+      return <HospitalDashboard />;
+    case "bloodbank":
+      return <BloodBankDashboard />;
+    case "admin":
+      return <AdminDashboard />;
+    default:
+      return null;
+  }
 }
 
 function App() {

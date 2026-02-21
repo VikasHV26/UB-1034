@@ -6,7 +6,7 @@ PRAGMA foreign_keys = ON;
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     google_id TEXT UNIQUE NOT NULL,
-    role TEXT CHECK(role IN ('patient','hospital','bloodbank')) NOT NULL,
+    role TEXT CHECK(role IN ('patient','hospital','bloodbank','admin')) NOT NULL,
     name TEXT NOT NULL,
     age INTEGER,
     email TEXT UNIQUE NOT NULL,

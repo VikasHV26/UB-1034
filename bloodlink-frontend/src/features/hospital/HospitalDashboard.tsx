@@ -11,28 +11,15 @@ interface Request {
 
 export default function HospitalDashboard() {
   const [requests, setRequests] = useState<Request[]>([]);
-  const [loading, setLoading] = useState(false);
 
   const fetchRequests = async () => {
-    try {
-      const res = await API.get("/hospital/requests");
-      setRequests(res.data);
-    } catch (error) {
-      alert("Failed to load requests");
-    }
+    const res = await API.get("/hospital/requests");
+    setRequests(res.data);
   };
 
   const updateStatus = async (id: number, status: string) => {
-    try {
-      setLoading(true);
-      await API.put(`/hospital/requests/${id}?status=${status}`);
-      alert(`Request ${status} successfully`);
-      fetchRequests();
-    } catch (error: any) {
-      alert(error.response?.data?.detail || "Action failed");
-    } finally {
-      setLoading(false);
-    }
+    await API.put(`/hospital/requests/${id}?status=${status}`);
+    fetchRequests();
   };
 
   useEffect(() => {
@@ -40,53 +27,113 @@ export default function HospitalDashboard() {
   }, []);
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Hospital Dashboard</h1>
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">🏥 Hospital Dashboard</h1>
+        <p className="text-gray-600">Manage blood requests from patients</p>
+      </div>
 
-      {requests.length === 0 ? (
-        <p>No patient requests found.</p>
-      ) : (
-        <div className="space-y-4">
-          {requests.map((req) => (
-            <div
-              key={req.id}
-              className="bg-white p-6 rounded-xl shadow-md"
-            >
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="font-bold text-lg">{req.patient_name}</p>
-                  <p>
-                    {req.blood_group} • {req.units_required} Units
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    Status: {req.status}
-                  </p>
-                </div>
-
-                {req.status === "pending" && (
-                  <div className="space-x-2">
-                    <button
-                      disabled={loading}
-                      onClick={() => updateStatus(req.id, "approved")}
-                      className="bg-green-600 text-white px-3 py-1 rounded"
-                    >
-                      Approve
-                    </button>
-
-                    <button
-                      disabled={loading}
-                      onClick={() => updateStatus(req.id, "rejected")}
-                      className="bg-red-600 text-white px-3 py-1 rounded"
-                    >
-                      Reject
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
+      {/* Stats Overview */}
+      <div className="stats-grid">
+        <div className="card-elevated">
+          <div className="card-body">
+            <p className="text-sm text-gray-600 font-medium mb-1">Total Requests</p>
+            <p className="text-3xl font-bold text-red-600">{requests.length}</p>
+          </div>
         </div>
-      )}
+        <div className="card-elevated">
+          <div className="card-body">
+            <p className="text-sm text-gray-600 font-medium mb-1">Pending</p>
+            <p className="text-3xl font-bold text-yellow-600">
+              {requests.filter(r => r.status === "pending").length}
+            </p>
+          </div>
+        </div>
+        <div className="card-elevated">
+          <div className="card-body">
+            <p className="text-sm text-gray-600 font-medium mb-1">Approved</p>
+            <p className="text-3xl font-bold text-green-600">
+              {requests.filter(r => r.status === "approved").length}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Requests List */}
+      <div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Blood Requests</h2>
+        {requests.length === 0 ? (
+          <div className="card">
+            <div className="card-body text-center py-12">
+              <p className="text-gray-500 text-lg">No blood requests available at the moment</p>
+            </div>
+          </div>
+        ) : (
+          <div className="grid gap-6">
+            {requests.map((req) => (
+              <div
+                key={req.id}
+                className="card hover:shadow-lg transition-shadow"
+              >
+                <div className="card-body">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-3 mb-2">
+                        <div className="bg-blue-100 rounded-lg p-2">
+                          <span className="text-xl">👤</span>
+                        </div>
+                        <div>
+                          <h2 className="text-lg font-bold text-gray-900">
+                            {req.patient_name}
+                          </h2>
+                          <p className="text-sm text-gray-600">Patient Request</p>
+                        </div>
+                      </div>
+
+                      <div className="ml-12 mt-3 space-y-1">
+                        <p className="text-gray-700">
+                          <span className="font-semibold">Blood Group:</span> {req.blood_group}
+                        </p>
+                        <p className="text-gray-700">
+                          <span className="font-semibold">Units Required:</span> {req.units_required} units
+                        </p>
+                        <span
+                          className={`inline-block mt-3 badge ${
+                            req.status === "approved"
+                              ? "badge-success"
+                              : req.status === "rejected"
+                              ? "badge-danger"
+                              : "badge-warning"
+                          }`}
+                        >
+                          {req.status || "pending"}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => updateStatus(req.id, "approved")}
+                        className="btn btn-success btn-sm"
+                      >
+                        ✓ Approve
+                      </button>
+
+                      <button
+                        onClick={() => updateStatus(req.id, "rejected")}
+                        className="btn btn-danger btn-sm"
+                      >
+                        ✗ Reject
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
